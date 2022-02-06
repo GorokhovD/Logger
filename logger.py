@@ -1,11 +1,9 @@
 import os
 import psutil
-import threading
-
+from time import sleep
 
 path = input("Insert Path: ")
 interval = int(input("Set Interval: "))
-
 
 def proc_Open():
     file = psutil.Popen([path]).pid
@@ -29,25 +27,23 @@ def handles():
     n_handles = process.num_handles()
     return n_handles
 
-def log():
-    return proc, cpu, mem, handl
-    #print("Process ID: %i" % proc, "Process used CPU: %i" % cpu, "Process used memory => rss: %i vms: %i" % mem, "Process Handle: %i" % handl)
+
+def writer():
+    f = open("logger.log", "a")
+    f.write("============== \n")
+    f.write("Process ID:    %i \n" % proc + "Process used CPU:     %i \n" % cpu + "Process used memory rss:     %i \n Process used memory vms:     %i \n" % mem + "Process Handle:     %i \n" % handl)
+    f.close()
+    print("Log Saved")
 
 proc = proc_Open()
 cpu = cpu_load()
 mem = process_memory()
 handl = handles()
-log = str(log())
 
-for pid in psutil.pids():
-    while pid == proc:
-        f = open("logger.log", "w")
-        f.write("Process Log %s \n" % path)
-        threading.Timer(interval, f.write(log))
-        print(log)
-        #print(cpu)
-        #print(mem)
-        #print(handl)
+while psutil.pid_exists(proc):
+    writer()
+    sleep(interval)
+
 
 
 # C:\Windows\System32\notepad.exe
