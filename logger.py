@@ -1,10 +1,21 @@
+''' ----- Logger V 1.0 ----- '''
+
+# Импортируем необхоимые библиотеки
 import os
 import psutil
 from time import sleep
 
+# Приветствие и краткая инструкция по работе с программой
+print('''Hey! To perform my work, \n
+you need to enter the path and \n
+the time Interval in seconds after which the file will be written! \n
+Example: \nInsert Path: C:\Windows\System32\calc.exe \nSet Interval: 7''')
+
+# Задаем параметры для работы программы
 path = input("Insert Path: ")
 interval = int(input("Set Interval: "))
 
+# Определяем набор функций для извлечения информации о каждом необходимом нам процессе.
 def proc_Open():
     file = psutil.Popen([path]).pid
     return file
@@ -27,7 +38,7 @@ def handles():
     n_handles = process.num_handles()
     return n_handles
 
-
+# Создаем функцию для создания и записи данных в файл
 def writer():
     f = open("logger.log", "a")
     f.write("============== \n")
@@ -40,11 +51,11 @@ cpu = cpu_load()
 mem = process_memory()
 handl = handles()
 
+# Условия выполнения программы
 while psutil.pid_exists(proc):
     writer()
     sleep(interval)
 
 
 
-# C:\Windows\System32\notepad.exe
-# C:\Program Files\Autodesk\AutoCAD 2016\acad.exe
+# готовый путь для запуска теста программы C:\Windows\System32\notepad.exe
